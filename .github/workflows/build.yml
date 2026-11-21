@@ -22,12 +22,19 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: 21
 
       - name: Prepare web assets
         run: |
           mkdir -p www
-          cp index.html www/
+          if [ -f index.html ]; then
+            cp index.html www/
+          elif [ -f indeks.html ]; then
+            cp indeks.html www/index.html
+          else
+            echo "index.html or indeks.html not found"
+            exit 1
+          fi
 
       - name: Initialize Capacitor and Android project
         run: |
